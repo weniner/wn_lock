@@ -4,8 +4,17 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wn_lock/src/lock_controller.dart';
 
 class NumWidget extends StatefulWidget {
+  /// 结果以String返回，
+  final ValueChanged<String> onMoveEnd;
+  final LockController lockController;
+
+  const NumWidget({Key key, this.onMoveEnd, @required this.lockController})
+      : assert(lockController == null, 'LockController can\'t be null'),
+        super(key: key);
+
   @override
   _NumState createState() {
     return _NumState();
@@ -18,13 +27,25 @@ class _NumState extends State<NumWidget> {
   List<Offset> _circle = [];
   List<Offset> _choiceCircle = [];
 
+  /// 停止移动标识
   bool isEnd = false;
+
+  /// 屏幕宽
+  double _width;
+
+  /// 屏幕高
+  double _height;
+
+  @override
+  void initState() {
+    super.initState();
+    _width = MediaQuery.of(context).size.width;
+    _height = MediaQuery.of(context).size.height;
+  }
 
   @override
   Widget build(BuildContext context) {
     if (_circle.length == 0) {
-      double _width = MediaQuery.of(context).size.width - 40;
-      double _height = MediaQuery.of(context).size.width + 40;
       double _radius = 20.0;
       for (int x = 0; x < 9; x++) {
         int i = x ~/ 3;
@@ -35,41 +56,37 @@ class _NumState extends State<NumWidget> {
       print(_circle);
     }
 
-    return Scaffold(
-      body: Center(
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onPanStart: (offset) {
-            _choiceCircle.clear();
-            isEnd = false;
-            _doList.clear();
-            localOffset = offset.localPosition;
-            isInCircle(localOffset);
-            setState(() {});
-            print("-------------> onPanStart ${offset.localPosition}");
-          },
-          onPanEnd: (offset) {
-            isEnd = true;
-            setState(() {});
-          },
-          onPanUpdate: (offset) {
-            isEnd = false;
-            localOffset = offset.localPosition;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onPanStart: (offset) {
+        _choiceCircle.clear();
+        isEnd = false;
+        _doList.clear();
+        localOffset = offset.localPosition;
+        isInCircle(localOffset);
+        setState(() {});
+        print("-------------> onPanStart ${offset.localPosition}");
+      },
+      onPanEnd: (offset) {
+        isEnd = true;
+        setState(() {});
+      },
+      onPanUpdate: (offset) {
+        isEnd = false;
+        localOffset = offset.localPosition;
 
-            isInCircle(localOffset);
-            setState(() {});
-            // print("-------------> onPanUpdate ${offset.localPosition}");
-          },
-          // onLongPressMoveUpdate: (offset) {
-          //   print("-------------> ${offset.localPosition}");
-          // },
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            child: CustomPaint(
-              size: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.width),
-              painter: NumSecret(_doList, _circle, localOffset, _choiceCircle, isEnd),
-            ),
-          ),
+        isInCircle(localOffset);
+        setState(() {});
+        // print("-------------> onPanUpdate ${offset.localPosition}");
+      },
+      // onLongPressMoveUpdate: (offset) {
+      //   print("-------------> ${offset.localPosition}");
+      // },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20),
+        child: CustomPaint(
+          size: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.width),
+          painter: NumSecret(_doList, _circle, localOffset, _choiceCircle, isEnd),
         ),
       ),
     );
@@ -153,4 +170,3 @@ class NumSecret extends CustomPainter {
     canvas.drawCircle(Offset(size.width - _radius, _radius), _radius, painter);
   }
 }
-

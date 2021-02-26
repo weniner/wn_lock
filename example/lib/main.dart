@@ -37,7 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: NumWidget(),
+      body: Center(
+        child: NumWidget(),
+      ),
     );
   }
 }
