@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wn_lock/src/lock_controller.dart';
+import 'package:wn_lock/src/controller/lock_controller.dart';
 
 class NumWidget extends StatefulWidget {
   /// 结果以String返回，
