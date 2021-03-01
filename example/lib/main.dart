@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -29,22 +30,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: WNLockWidget(
-          attr: CircleAttr(radius: 10),
+          attr: CircleAttr(radius: 15, color: Colors.red, width: 10),
           controller: LockController(),
           width: 300,
-          height: 300,
-          row: 9,
-          column: 9,
+          height: 400,
+          row: 3,
+          column: 3,
         ),
       ),
     );

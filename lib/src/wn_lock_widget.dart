@@ -32,8 +32,15 @@ class WNLockWidget extends StatefulWidget {
   /// 可触碰点占child比例
   final double touchInChildScale;
 
+  /// 界面宽
   final double width;
+
+  /// 界面高
   final double height;
+
+  final EdgeInsets padding;
+
+  final EdgeInsets margin;
 
   /// 每个Child平分后占据的空间比例 以row数值作为平分点
   /// 平分空间后所占各空间比例
@@ -51,6 +58,8 @@ class WNLockWidget extends StatefulWidget {
     this.column = 3,
     this.attr,
     this.touchInChildScale = 1,
+    this.padding,
+    this.margin,
     // this.eachInParentScale = 0.5,
   })  : assert(controller != null, 'LockController can\'t be null'),
         assert(touchInChildScale > 0 && touchInChildScale <= 1, "touchInWidgetScale only approve (0,1]"),
@@ -111,14 +120,14 @@ class _WNLockState extends State<WNLockWidget> {
   void initPoint() {
     if (_centerPoint.length == 0) {
       double halfLength = _attr.length / 2;
-      double verticalSpacing = (_height - _attr.length) / _column;
-      double horizontalSpacing = (_width - _attr.length) / _row;
+      double verticalSpacing = (_height - _attr.length) / (_column - 1);
+      double horizontalSpacing = (_width - _attr.length) / (_row - 1);
       int tempColumn = 0;
       do {
         tempColumn++;
         for (int i = 0; i < _row; i++) {
           int x = i;
-          int y = tempColumn;
+          int y = tempColumn - 1;
           _centerPoint.add(Offset(halfLength + horizontalSpacing * x, halfLength + verticalSpacing * y));
         }
       } while (tempColumn < _column);
@@ -129,7 +138,7 @@ class _WNLockState extends State<WNLockWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    Widget item = GestureDetector(
       behavior: HitTestBehavior.opaque,
       onPanStart: (offset) {
         isEnd = false;
@@ -137,18 +146,22 @@ class _WNLockState extends State<WNLockWidget> {
         localOffset = offset.localPosition;
         isInCircle(localOffset);
         setState(() {});
-        print("-------------> onPanStart ${offset.localPosition}");
       },
       onPanEnd: (offset) {
         isEnd = true;
+        if (widget.onPanEnd != null) {
+          widget.onPanEnd(_choiceResult.toString());
+        }
         setState(() {});
       },
       onPanUpdate: (offset) {
         isEnd = false;
         localOffset = offset.localPosition;
         isInCircle(localOffset);
+        if (widget.onPanUpdate != null) {
+          widget.onPanUpdate(_choiceResult.toString());
+        }
         setState(() {});
-        // print("-------------> onPanUpdate ${offset.localPosition}");
       },
       child: CustomPaint(
         size: Size(_width, _height),
@@ -161,6 +174,14 @@ class _WNLockState extends State<WNLockWidget> {
         ),
       ),
     );
+    if (widget.padding != null || widget.margin != null) {
+      return Container(
+        padding: widget.padding ?? EdgeInsets.all(0.0),
+        margin: widget.margin ?? EdgeInsets.all(0.0),
+        child: item,
+      );
+    }
+    return item;
   }
 
   void isInCircle(Offset localOffset) {
@@ -170,8 +191,6 @@ class _WNLockState extends State<WNLockWidget> {
       if (radius < touchDistance) {
         if (!_choiceResult.contains(_centerPoint.indexOf(offset))) {
           _choiceResult.add(_centerPoint.indexOf(offset));
-          print("list is ------------->  $_choiceResult ");
-          print("add is ------------->  $offset ");
         }
       }
     }

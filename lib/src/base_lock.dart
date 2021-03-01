@@ -28,10 +28,16 @@ abstract class IShape {
     List<Offset> centerPoints,
     Attr attr,
   );
+
+  void revisePaint(Paint paint, Attr attr);
 }
 
 class Shape implements IShape {
+  @override
   void draw(Canvas canvas, Paint paint, List<Offset> centerPoints, Attr attr) {}
+
+  @override
+  void revisePaint(Paint paint, Attr attr) {}
 
   factory Shape.fromAttr(Attr attr) {
     if (attr is CircleAttr) {

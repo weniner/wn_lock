@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:wn_lock/src/base_lock.dart';
 
 class WNLockPainter extends CustomPainter {
-  Paint painter;
+  Paint shapePaint;
+
+  Paint linePaint;
 
   List<int> choiceResult = [];
 
@@ -25,8 +27,9 @@ class WNLockPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    initPainter();
-    Shape.fromAttr(attr).draw(canvas, painter, centerPoints, attr);
+    initLinePainter();
+    initShapePainter();
+    Shape.fromAttr(attr).draw(canvas, shapePaint, centerPoints, attr);
     if (choiceResult.length != 0) {
       Path path = Path();
       int first = choiceResult[0];
@@ -37,7 +40,7 @@ class WNLockPainter extends CustomPainter {
       if (!isEnd) {
         path.lineTo(localOffset.dx, localOffset.dy);
       }
-      canvas.drawPath(path, painter);
+      canvas.drawPath(path, linePaint);
     }
   }
 
@@ -46,8 +49,15 @@ class WNLockPainter extends CustomPainter {
     return true;
   }
 
-  void initPainter() {
-    painter = Paint()
+  void initShapePainter() {
+    shapePaint = Paint()
+      ..color = Colors.lightBlueAccent
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+  }
+
+  void initLinePainter() {
+    linePaint = Paint()
       ..color = Colors.lightBlueAccent
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
