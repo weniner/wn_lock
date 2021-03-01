@@ -6,26 +6,20 @@ class WNLockPainter extends CustomPainter {
 
   Paint painter;
 
-  List<int> doList = [];
+  List<int> choiceResult = [];
 
   List<Offset> circle = [];
 
   Offset localOffset;
 
-  List<Offset> choiceCircle = [];
-
   bool isEnd;
 
-  Listenable factor;
-
   WNLockPainter({
-    this.doList,
+    this.choiceResult,
     this.circle,
     this.localOffset,
-    this.choiceCircle,
     this.isEnd,
-    this.factor,
-  }) : super(repaint: factor);
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -43,11 +37,12 @@ class WNLockPainter extends CustomPainter {
     drawCircle(canvas, size);
     canvas.restore();
 
-    if (choiceCircle.length != 0) {
+    if (choiceResult.length != 0) {
       Path path = Path();
-      path.moveTo(choiceCircle[0].dx, choiceCircle[0].dy);
-      for (int i = 1; i < choiceCircle.length; i++) {
-        path.lineTo(choiceCircle[i].dx, choiceCircle[i].dy);
+      int first = choiceResult[0];
+      path.moveTo(circle[first].dx, circle[first].dy);
+      for (int i = 1; i < choiceResult.length; i++) {
+        path.lineTo(circle[choiceResult[i]].dx, circle[choiceResult[i]].dy);
       }
       if (!isEnd) {
         path.lineTo(localOffset.dx, localOffset.dy);

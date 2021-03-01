@@ -4,16 +4,53 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wn_lock/src/base_lock.dart';
 import 'package:wn_lock/src/controller/lock_controller.dart';
 import 'package:wn_lock/src/wn_lock_paint.dart';
 
 class WNLockWidget extends StatefulWidget {
-  /// 结果以String返回，
-  final ValueChanged<String> onMoveEnd;
+  /// 移动结束 选取结果返回
+  final ValueChanged<String> onPanEnd;
+
+  /// 移动过程中 选取结果返回
+  final ValueChanged<String> onPanUpdate;
+
+  /// Lock句柄
   final LockController lockController;
 
-  const WNLockWidget({Key key, this.onMoveEnd, @required this.lockController})
-      : assert(lockController == null, 'LockController can\'t be null'),
+  /// 横向列数
+  final int row;
+
+  /// 纵向列数
+  final int column;
+
+  /// 属性
+  /// link [CircleAttr]、[SquareAttr]
+  final Attr attr;
+
+  /// 可触碰点占child比例
+  final double touchInChildScale;
+
+  /// 每个Child平分后占据的空间比例 以row数值作为平分点
+  /// 平分空间后所占各空间比例
+  // todo item 按照比例绘制
+  // final double eachInParentScale;
+
+  const WNLockWidget({
+    Key key,
+    @required this.lockController,
+    this.onPanEnd,
+    this.onPanUpdate,
+    this.row = 3,
+    this.column = 3,
+    this.attr,
+    this.touchInChildScale = 0.5,
+    // this.eachInParentScale = 0.5,
+  })  : assert(lockController == null, 'LockController can\'t be null'),
+        assert(touchInChildScale > 0 && touchInChildScale <= 1, "touchInWidgetScale only approve (0,1]"),
+        // assert(eachInParentScale > 0 && eachInParentScale <= 1, "eachInParentScale only approve (0,1]"),
+        assert(row > 0 && row <= 9, "row only approve (0,9]"),
+        assert(column > 0 && column <= 9, "column only approve (0,9]"),
         super(key: key);
 
   @override
@@ -24,24 +61,36 @@ class WNLockWidget extends StatefulWidget {
 
 class _WNLockState extends State<WNLockWidget> {
   Offset localOffset;
-  List<int> _doList = [];
+  List<int> _choiceResult = [];
   List<Offset> _circle = [];
-  List<Offset> _choiceCircle = [];
 
   /// 停止移动标识
   bool isEnd = false;
 
-  /// 屏幕宽
+  /// 控件宽
   double _width;
 
-  /// 屏幕高
+  /// 控件高
   double _height;
+
+  LockController _lockController;
+
+  int _row;
+
+  int _column;
+
+  Attr _attr;
 
   @override
   void initState() {
     super.initState();
     _width = MediaQuery.of(context).size.width;
     _height = MediaQuery.of(context).size.height;
+    _row = widget.row;
+    _column = widget.column;
+    _lockController = widget.lockController;
+    _lockController.offsets = _circle;
+    _attr = widget.attr ?? CircleAttr();
   }
 
   @override
@@ -60,9 +109,8 @@ class _WNLockState extends State<WNLockWidget> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onPanStart: (offset) {
-        _choiceCircle.clear();
         isEnd = false;
-        _doList.clear();
+        _choiceResult.clear();
         localOffset = offset.localPosition;
         isInCircle(localOffset);
         setState(() {});
@@ -85,10 +133,9 @@ class _WNLockState extends State<WNLockWidget> {
         child: CustomPaint(
           size: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.width),
           painter: WNLockPainter(
-            doList: _doList,
+            choiceResult: _choiceResult,
             circle: _circle,
             localOffset: localOffset,
-            choiceCircle: _choiceCircle,
             isEnd: isEnd,
           ),
         ),
@@ -100,10 +147,9 @@ class _WNLockState extends State<WNLockWidget> {
     for (Offset offset in _circle) {
       double radius = sqrt(pow(localOffset.dx - offset.dx, 2) + pow(localOffset.dy - offset.dy, 2));
       if (radius < 20.0) {
-        if (!_doList.contains(_circle.indexOf(offset))) {
-          _doList.add(_circle.indexOf(offset));
-          _choiceCircle.add(offset);
-          print("list is ------------->  $_doList ");
+        if (!_choiceResult.contains(_circle.indexOf(offset))) {
+          _choiceResult.add(_circle.indexOf(offset));
+          print("list is ------------->  $_choiceResult ");
           print("add is ------------->  $offset ");
         }
       }
