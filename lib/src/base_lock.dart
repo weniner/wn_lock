@@ -1,13 +1,19 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
+
 abstract class IAttr {
-  String attrToString();
+  double getLength();
 }
 
 class Attr implements IAttr {
+  double length;
+
+  Attr({this.length});
+
   @override
-  String attrToString() {
-    throw 'attrToString method must be implemented';
+  double getLength() {
+    return length;
   }
 }
 
@@ -15,26 +21,16 @@ class CircleAttr extends Attr {
   double radius;
 
   CircleAttr({
-    this.radius,
-  });
-
-  @override
-  String attrToString() {
-    return '';
-  }
+    @required this.radius,
+  }) : super(length: radius * 2);
 }
 
 class SquareAttr extends Attr {
   double length;
 
-  SquareAttr(
-    this.length,
-  );
-
-  @override
-  String attrToString() {
-    return '';
-  }
+  SquareAttr({
+    @required this.length,
+  }) : super(length: length);
 }
 
 abstract class IShape {
@@ -49,7 +45,7 @@ abstract class IShape {
 class Shape implements IShape {
   void draw(Canvas canvas, Paint paint, Offset centerPoint, Attr attr) {}
 
-  factory Shape(Attr attr) {
+  factory Shape.fromAttr(Attr attr) {
     if (attr is CircleAttr) {
       return Circle();
     } else if (attr is SquareAttr) {

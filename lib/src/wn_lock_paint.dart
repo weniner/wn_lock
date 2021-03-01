@@ -8,7 +8,7 @@ class WNLockPainter extends CustomPainter {
 
   List<int> choiceResult = [];
 
-  List<Offset> circle = [];
+  List<Offset> centerPoint = [];
 
   Offset localOffset;
 
@@ -16,17 +16,14 @@ class WNLockPainter extends CustomPainter {
 
   WNLockPainter({
     this.choiceResult,
-    this.circle,
+    this.centerPoint,
     this.localOffset,
     this.isEnd,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    painter = Paint()
-      ..color = Colors.lightBlueAccent
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke;
+    initPainter();
     drawCircle(canvas, size);
     canvas.save();
     canvas.translate(0, size.width / 2 + _radius);
@@ -40,9 +37,9 @@ class WNLockPainter extends CustomPainter {
     if (choiceResult.length != 0) {
       Path path = Path();
       int first = choiceResult[0];
-      path.moveTo(circle[first].dx, circle[first].dy);
+      path.moveTo(centerPoint[first].dx, centerPoint[first].dy);
       for (int i = 1; i < choiceResult.length; i++) {
-        path.lineTo(circle[choiceResult[i]].dx, circle[choiceResult[i]].dy);
+        path.lineTo(centerPoint[choiceResult[i]].dx, centerPoint[choiceResult[i]].dy);
       }
       if (!isEnd) {
         path.lineTo(localOffset.dx, localOffset.dy);
@@ -60,5 +57,12 @@ class WNLockPainter extends CustomPainter {
     canvas.drawCircle(Offset(_radius, _radius), _radius, painter);
     canvas.drawCircle(Offset(size.width / 2, _radius), _radius, painter);
     canvas.drawCircle(Offset(size.width - _radius, _radius), _radius, painter);
+  }
+
+  void initPainter() {
+    painter = Paint()
+      ..color = Colors.lightBlueAccent
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
   }
 }
