@@ -1,45 +1,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wn_lock/src/base_lock.dart';
 
 class WNLockPainter extends CustomPainter {
-  double _radius = 20.0;
-
   Paint painter;
 
   List<int> choiceResult = [];
 
-  List<Offset> centerPoint = [];
+  List<Offset> centerPoints = [];
 
   Offset localOffset;
 
   bool isEnd;
 
+  Attr attr;
+
   WNLockPainter({
     this.choiceResult,
-    this.centerPoint,
+    this.centerPoints,
     this.localOffset,
     this.isEnd,
+    this.attr,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     initPainter();
-    drawCircle(canvas, size);
-    canvas.save();
-    canvas.translate(0, size.width / 2 + _radius);
-    drawCircle(canvas, size);
-    canvas.restore();
-    canvas.save();
-    canvas.translate(0, size.width + _radius * 2);
-    drawCircle(canvas, size);
-    canvas.restore();
-
+    Shape.fromAttr(attr).draw(canvas, painter, centerPoints, attr);
     if (choiceResult.length != 0) {
       Path path = Path();
       int first = choiceResult[0];
-      path.moveTo(centerPoint[first].dx, centerPoint[first].dy);
+      path.moveTo(centerPoints[first].dx, centerPoints[first].dy);
       for (int i = 1; i < choiceResult.length; i++) {
-        path.lineTo(centerPoint[choiceResult[i]].dx, centerPoint[choiceResult[i]].dy);
+        path.lineTo(centerPoints[choiceResult[i]].dx, centerPoints[choiceResult[i]].dy);
       }
       if (!isEnd) {
         path.lineTo(localOffset.dx, localOffset.dy);
@@ -51,12 +44,6 @@ class WNLockPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
-  }
-
-  void drawCircle(Canvas canvas, Size size) {
-    canvas.drawCircle(Offset(_radius, _radius), _radius, painter);
-    canvas.drawCircle(Offset(size.width / 2, _radius), _radius, painter);
-    canvas.drawCircle(Offset(size.width - _radius, _radius), _radius, painter);
   }
 
   void initPainter() {

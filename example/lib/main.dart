@@ -39,7 +39,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: WNLockWidget(
+          attr: CircleAttr(radius: 10),
           controller: LockController(),
+          width: 300,
+          height: 300,
+          row: 9,
+          column: 9,
         ),
       ),
     );

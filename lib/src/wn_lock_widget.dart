@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wn_lock/src/base_lock.dart';
 import 'package:wn_lock/src/controller/lock_controller.dart';
+import 'package:wn_lock/src/model/circle_attr.dart';
 import 'package:wn_lock/src/wn_lock_paint.dart';
 
 class WNLockWidget extends StatefulWidget {
@@ -49,7 +50,7 @@ class WNLockWidget extends StatefulWidget {
     this.row = 3,
     this.column = 3,
     this.attr,
-    this.touchInChildScale = 0.5,
+    this.touchInChildScale = 1,
     // this.eachInParentScale = 0.5,
   })  : assert(controller != null, 'LockController can\'t be null'),
         assert(touchInChildScale > 0 && touchInChildScale <= 1, "touchInWidgetScale only approve (0,1]"),
@@ -91,6 +92,8 @@ class _WNLockState extends State<WNLockWidget> {
 
   Attr _attr;
 
+  double _touchInChildScale;
+
   @override
   void initState() {
     super.initState();
@@ -101,6 +104,7 @@ class _WNLockState extends State<WNLockWidget> {
     _lockController = widget.controller;
     _lockController.offsets = _centerPoint;
     _attr = widget.attr ?? CircleAttr(radius: 10.0);
+    _touchInChildScale = widget.touchInChildScale;
     initPoint();
   }
 
@@ -118,7 +122,6 @@ class _WNLockState extends State<WNLockWidget> {
           _centerPoint.add(Offset(halfLength + horizontalSpacing * x, halfLength + verticalSpacing * y));
         }
       } while (tempColumn < _column);
-
       print(_width);
       print(_centerPoint);
     }
@@ -151,8 +154,9 @@ class _WNLockState extends State<WNLockWidget> {
         size: Size(_width, _height),
         painter: WNLockPainter(
           choiceResult: _choiceResult,
-          centerPoint: _centerPoint,
+          centerPoints: _centerPoint,
           localOffset: localOffset,
+          attr: _attr,
           isEnd: isEnd,
         ),
       ),
@@ -160,9 +164,10 @@ class _WNLockState extends State<WNLockWidget> {
   }
 
   void isInCircle(Offset localOffset) {
+    final touchDistance = _attr.length / 2 * _touchInChildScale;
     for (Offset offset in _centerPoint) {
       double radius = sqrt(pow(localOffset.dx - offset.dx, 2) + pow(localOffset.dy - offset.dy, 2));
-      if (radius < 20.0) {
+      if (radius < touchDistance) {
         if (!_choiceResult.contains(_centerPoint.indexOf(offset))) {
           _choiceResult.add(_centerPoint.indexOf(offset));
           print("list is ------------->  $_choiceResult ");
