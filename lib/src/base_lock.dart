@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:wn_lock/src/model/circle_attr.dart';
 import 'package:wn_lock/src/model/square_attr.dart';
 import 'package:wn_lock/src/shape/circle.dart';
+import 'package:wn_lock/src/shape/heart.dart';
 import 'package:wn_lock/src/shape/square.dart';
+
+import 'model/heart_attr.dart';
 
 abstract class IAttr {
   double getLength();
@@ -34,16 +37,21 @@ abstract class IShape {
 
 class Shape implements IShape {
   @override
-  void draw(Canvas canvas, Paint paint, List<Offset> centerPoints, Attr attr) {}
+  @mustCallSuper
+  void draw(Canvas canvas, Paint paint, List<Offset> centerPoints, Attr attr) {
+    revisePaint(paint, attr);
+  }
 
   @override
   void revisePaint(Paint paint, Attr attr) {}
 
-  factory Shape.fromAttr(Attr attr) {
+  Shape fromAttr(Attr attr) {
     if (attr is CircleAttr) {
       return Circle();
     } else if (attr is SquareAttr) {
       return Square();
+    } else if (attr is HeartAttr) {
+      return Heart();
     }
     throw UnimplementedError("Attr method not implemented,"
         " you can use CircleAttr() or other to replace it");

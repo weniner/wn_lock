@@ -51,8 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: WNLockWidget(
           lineColor: Colors.cyanAccent,
-          lineWidth: 5,
-          attr: CircleAttr(radius: 15, color: Colors.amberAccent, width: 5),
+          lineWidth: 1,
+          attr: HeartAttr(topVerticalLength: 30, color: Colors.amberAccent, width: 2),
           controller: _lockController,
           width: 300,
           height: 400,

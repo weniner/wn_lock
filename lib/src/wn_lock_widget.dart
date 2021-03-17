@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:wn_lock/src/base_lock.dart';
 import 'package:wn_lock/src/controller/lock_controller.dart';
 import 'package:wn_lock/src/model/circle_attr.dart';
+import 'package:wn_lock/src/model/square_attr.dart';
 import 'package:wn_lock/src/wn_lock_paint.dart';
 
 class WNLockWidget extends StatefulWidget {
@@ -85,9 +86,6 @@ class _WNLockState extends State<WNLockWidget> {
   /// 手指位置
   Offset localOffset;
 
-  /// 被选中的
-  List<int> _choiceResult = [];
-
   /// 中心点
   List<Offset> _centerPoint = [];
 
@@ -128,6 +126,13 @@ class _WNLockState extends State<WNLockWidget> {
     _lineWidth = widget.lineWidth;
     initPoint();
   }
+
+  @override
+  void didUpdateWidget(covariant WNLockWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+  }
+
 
   void initPoint() {
     if (_centerPoint.length == 0) {

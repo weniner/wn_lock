@@ -4,9 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:wn_lock/src/base_lock.dart';
 import 'package:wn_lock/src/model/square_attr.dart';
 
-class Square implements Shape {
+class Square extends Shape {
   @override
   void draw(Canvas canvas, Paint paint, List<Offset> centerPoints, Attr attr) {
+    super.draw(canvas, paint, centerPoints, attr);
     revisePaint(paint, attr);
     SquareAttr squareAttr = attr;
     double length = squareAttr.length;

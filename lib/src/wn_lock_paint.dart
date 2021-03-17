@@ -35,7 +35,7 @@ class WNLockPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     initLinePainter();
     initShapePainter();
-    Shape.fromAttr(attr).draw(canvas, shapePaint, centerPoints, attr);
+    Shape().fromAttr(attr).draw(canvas, shapePaint, centerPoints, attr);
     if (choiceResult.length != 0) {
       Path path = Path();
       int first = choiceResult[0];

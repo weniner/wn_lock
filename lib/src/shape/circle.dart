@@ -3,9 +3,10 @@ import 'dart:ui';
 import 'package:wn_lock/src/base_lock.dart';
 import 'package:wn_lock/src/model/circle_attr.dart';
 
-class Circle implements Shape {
+class Circle extends Shape {
   @override
   void draw(Canvas canvas, Paint paint, List<Offset> centerPoints, Attr attr) {
+    super.draw(canvas, paint, centerPoints, attr);
     revisePaint(paint, attr);
     CircleAttr circleAttr = attr;
     double radius = circleAttr.radius;
