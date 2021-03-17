@@ -3,19 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:wn_lock/src/base_lock.dart';
 
 class WNLockPainter extends CustomPainter {
+  final double lineWidth;
+
+  final Color lineColor;
+
+  final List<int> choiceResult;
+
+  final List<Offset> centerPoints;
+
+  final Offset localOffset;
+
+  final bool isEnd;
+
+  final Attr attr;
+
   Paint shapePaint;
 
   Paint linePaint;
-
-  List<int> choiceResult = [];
-
-  List<Offset> centerPoints = [];
-
-  Offset localOffset;
-
-  bool isEnd;
-
-  Attr attr;
 
   WNLockPainter({
     this.choiceResult,
@@ -23,6 +27,8 @@ class WNLockPainter extends CustomPainter {
     this.localOffset,
     this.isEnd,
     this.attr,
+    this.lineWidth,
+    this.lineColor,
   });
 
   @override
@@ -58,8 +64,8 @@ class WNLockPainter extends CustomPainter {
 
   void initLinePainter() {
     linePaint = Paint()
-      ..color = Colors.lightBlueAccent
-      ..strokeWidth = 2
+      ..color = lineColor ?? Colors.lightBlueAccent
+      ..strokeWidth = lineWidth ?? 2
       ..style = PaintingStyle.stroke;
   }
 }

@@ -1,13 +1,17 @@
-import 'dart:ui';
-
 class LockValue {
-  final List<Offset> offsets;
+  final List<int> offsets;
 
-  static LockValue empty = LockValue();
+  static const empty = LockValue(offsets: []);
 
-  LockValue copyWith(List<Offset> offsets) {
-    return LockValue(offsets: offsets);
+  const LockValue({
+    this.offsets,
+  }) : assert(offsets != null);
+
+  LockValue copyWith({
+    List<int> result,
+  }) {
+    return LockValue(
+      offsets: result ?? this.offsets,
+    );
   }
-
-  LockValue({this.offsets});
 }

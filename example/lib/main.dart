@@ -30,13 +30,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  LockController _lockController;
+
+  @override
+  void initState() {
+    super.initState();
+    _lockController = LockController();
+    _lockController.addListener(_lockListener);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _lockController.removeListener(_lockListener);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: WNLockWidget(
-          attr: CircleAttr(radius: 15, color: Colors.red, width: 10),
-          controller: LockController(),
+          lineColor: Colors.cyanAccent,
+          lineWidth: 5,
+          attr: CircleAttr(radius: 15, color: Colors.amberAccent, width: 5),
+          controller: _lockController,
           width: 300,
           height: 400,
           row: 3,
@@ -44,5 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  void _lockListener() {
+    print('${_lockController.value.offsets}');
   }
 }

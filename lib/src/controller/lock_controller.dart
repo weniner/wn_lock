@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:wn_lock/wn_lock.dart';
 
 class LockController extends ValueNotifier<LockValue> {
-  LockController({List<Offset> offsets}) : super(offsets == null ? LockValue.empty : LockValue(offsets: offsets));
+  LockController({List<int> offsets}) : super(offsets == null ? LockValue.empty : LockValue(offsets: offsets));
 
   LockController.fromValue(LockValue value) : super(value ?? LockValue.empty);
 
@@ -11,12 +11,25 @@ class LockController extends ValueNotifier<LockValue> {
     value = LockValue.empty;
   }
 
-  set offsets(List<Offset> newOffsets) {
-    value = value.copyWith(newOffsets);
+  set offsets(List<int> newOffsets) {
+    value = value.copyWith(
+      result: newOffsets,
+    );
+  }
+
+  List<int> get offsets {
+    return value.offsets;
+  }
+
+  void addOffsets(int newOffset) {
+    List<int> tempList = List<int>.from(this.offsets);
+    tempList.add(newOffset);
+    value = value.copyWith(result: tempList);
   }
 
   @override
   set value(LockValue newValue) {
+    assert(newValue != null, 'offset must not be null');
     super.value = newValue;
   }
 }
