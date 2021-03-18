@@ -10,11 +10,9 @@ dependencies:
 ```
 
 ### 演示
-<figure class="third">
-    <img src="https://github.com/weniner/wn_lock/blob/main/img/example1.jpg">
-    <img src="https://github.com/weniner/wn_lock/blob/main/img/example2.jpg">
-    <img src="https://github.com/weniner/wn_lock/blob/main/img/example3.jpg">
-</figure>
+||||
+|--|--|--|
+| <img src="https://github.com/weniner/wn_lock/blob/main/img/example1.jpg"> |<img src="https://github.com/weniner/wn_lock/blob/main/img/example2.jpg">|<img src="https://github.com/weniner/wn_lock/blob/main/img/example3.jpg">|
 
 ### 例子
 
