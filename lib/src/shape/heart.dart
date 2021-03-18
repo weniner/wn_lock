@@ -7,7 +7,6 @@ class Heart extends Shape {
   @override
   void draw(Canvas canvas, Paint paint, List<Offset> centerPoints, Attr attr) {
     super.draw(canvas, paint, centerPoints, attr);
-    var attrs = attr as HeartAttr;
     for (Offset offset in centerPoints) {
       final path = Path();
       path.moveTo(offset.dx, offset.dy);

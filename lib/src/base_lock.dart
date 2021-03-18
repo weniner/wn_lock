@@ -20,7 +20,7 @@ class Attr implements IAttr {
 
   @override
   double getLength() {
-    return length;
+    return length ?? 0.0;
   }
 }
 

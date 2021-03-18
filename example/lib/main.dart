@@ -52,12 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: WNLockWidget(
           lineColor: Colors.cyanAccent,
           lineWidth: 1,
-          attr: HeartAttr(topVerticalLength: 30, color: Colors.amberAccent, width: 2),
+          attr: HeartAttr( color: Colors.amberAccent, width: 2),
           controller: _lockController,
           width: 300,
           height: 400,
-          row: 3,
-          column: 3,
+          row: 5,
+          column: 5,
         ),
       ),
     );
