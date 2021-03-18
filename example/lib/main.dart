@@ -50,9 +50,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Center(
         child: WNLockWidget(
-          lineColor: Colors.cyanAccent,
-          lineWidth: 1,
-          attr: HeartAttr( color: Colors.amberAccent, width: 2),
+          lineColor: Colors.amber,
+          lineWidth: 2,
+          attr: HeartAttr( color: Colors.green, width: 2),
           controller: _lockController,
           width: 300,
           height: 400,

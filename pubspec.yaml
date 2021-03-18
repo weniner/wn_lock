@@ -1,8 +1,8 @@
 name: wn_lock
 description: 可自定义的手势密码锁
 version: 0.0.1
-author: weniner <1319995601@qq.com>
-homepage: https://github.com/weniner/wn_lock/tree/main
+author: weniner <weninerdroid@163.com>
+homepage: https://github.com/weniner/wn_lock
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
