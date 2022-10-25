@@ -21,8 +21,8 @@ class HeartAttr extends Attr {
     // this.topVerticalLength = 5,
     // this.bottomVerticalLength = 20,
     // this.centerHorizontalLength = 40,
-    this.color,
-    this.width,
+    this.color = Colors.black,
+    this.width = 2.0,
   }) : super(length: 20);
 // assert(topVerticalLength > 0, ' topVerticalLength must bigger than zero'),
 // assert(bottomVerticalLength > 0, ' bottomVerticalLength must bigger than zeroh'),

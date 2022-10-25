@@ -9,21 +9,20 @@ class Square extends Shape {
   void draw(Canvas canvas, Paint paint, List<Offset> centerPoints, Attr attr) {
     super.draw(canvas, paint, centerPoints, attr);
     revisePaint(paint, attr);
-    SquareAttr squareAttr = attr;
+    SquareAttr squareAttr = attr as SquareAttr;
     double length = squareAttr.length;
     for (Offset offset in centerPoints) {
-      canvas.drawRect(Rect.fromCenter(center: offset, width: length, height: length), paint);
+      canvas.drawRect(
+        Rect.fromCenter(center: offset, width: length, height: length),
+        paint,
+      );
     }
   }
 
   @override
   void revisePaint(Paint paint, Attr attr) {
-    SquareAttr localAttr = attr;
-    if (localAttr.color != null) {
-      paint.color = localAttr.color;
-    }
-    if (localAttr.width != null) {
-      paint.strokeWidth = localAttr.width;
-    }
+    SquareAttr localAttr = attr as SquareAttr;
+    paint.color = localAttr.color;
+    paint.strokeWidth = localAttr.width;
   }
 }

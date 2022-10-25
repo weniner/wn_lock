@@ -10,31 +10,31 @@ class Heart extends Shape {
     for (Offset offset in centerPoints) {
       final path = Path();
       path.moveTo(offset.dx, offset.dy);
-      path.cubicTo(offset.dx - 5, offset.dy - 25, offset.dx - 25, offset.dy - 5, offset.dx - 20, offset.dy);
+      path.cubicTo(offset.dx - 5, offset.dy - 25, offset.dx - 25, offset.dy - 5,
+          offset.dx - 20, offset.dy);
       canvas.drawPath(path, paint);
       path.reset();
       path.moveTo(offset.dx - 20, offset.dy);
-      path.cubicTo(offset.dx - 18, offset.dy + 10, offset.dx - 7, offset.dy + 5, offset.dx, offset.dy + 20);
+      path.cubicTo(offset.dx - 18, offset.dy + 10, offset.dx - 7, offset.dy + 5,
+          offset.dx, offset.dy + 20);
       canvas.drawPath(path, paint);
       path.reset();
       path.moveTo(offset.dx, offset.dy);
-      path.cubicTo(offset.dx + 5, offset.dy - 25, offset.dx + 25, offset.dy - 5, offset.dx + 20, offset.dy);
+      path.cubicTo(offset.dx + 5, offset.dy - 25, offset.dx + 25, offset.dy - 5,
+          offset.dx + 20, offset.dy);
       canvas.drawPath(path, paint);
       path.reset();
       path.moveTo(offset.dx + 20, offset.dy);
-      path.cubicTo(offset.dx + 18, offset.dy + 10, offset.dx + 7, offset.dy + 5, offset.dx, offset.dy + 20);
+      path.cubicTo(offset.dx + 18, offset.dy + 10, offset.dx + 7, offset.dy + 5,
+          offset.dx, offset.dy + 20);
       canvas.drawPath(path, paint);
     }
   }
 
   @override
   void revisePaint(Paint paint, Attr attr) {
-    HeartAttr localAttr = attr;
-    if (localAttr.color != null) {
-      paint.color = localAttr.color;
-    }
-    if (localAttr.width != null) {
-      paint.strokeWidth = localAttr.width;
-    }
+    HeartAttr localAttr = attr as HeartAttr;
+    paint.color = localAttr.color;
+    paint.strokeWidth = localAttr.width;
   }
 }

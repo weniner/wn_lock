@@ -4,11 +4,11 @@ class LockValue {
   static const empty = LockValue(offsets: []);
 
   const LockValue({
-    this.offsets,
-  }) : assert(offsets != null);
+    required this.offsets,
+  });
 
   LockValue copyWith({
-    List<int> result,
+    List<int>? result,
   }) {
     return LockValue(
       offsets: result ?? this.offsets,

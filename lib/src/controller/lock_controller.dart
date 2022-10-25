@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:wn_lock/wn_lock.dart';
 
 class LockController extends ValueNotifier<LockValue> {
-  LockController({List<int> offsets}) : super(offsets == null ? LockValue.empty : LockValue(offsets: offsets));
+  LockController({List<int>? offsets})
+      : super(
+          offsets == null ? LockValue.empty : LockValue(offsets: offsets),
+        );
 
-  LockController.fromValue(LockValue value) : super(value ?? LockValue.empty);
+  LockController.fromValue(LockValue value) : super(value);
 
   /// 如果你想要重置选取结果，调用此方法。
   void reset() {
@@ -29,7 +32,6 @@ class LockController extends ValueNotifier<LockValue> {
 
   @override
   set value(LockValue newValue) {
-    assert(newValue != null, 'offset must not be null');
     super.value = newValue;
   }
 }

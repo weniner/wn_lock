@@ -16,11 +16,11 @@ abstract class IAttr {
 class Attr implements IAttr {
   double length;
 
-  Attr({this.length});
+  Attr({this.length = 1.0});
 
   @override
   double getLength() {
-    return length ?? 0.0;
+    return length;
   }
 }
 

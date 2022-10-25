@@ -12,9 +12,10 @@ class SquareAttr extends Attr {
   double width;
 
   SquareAttr({
-    @required this.length,
-    this.color,
-    this.width,
-  })  : assert(width < length / 2, ' width is request smaller than half of length'),
+    required this.length,
+    this.color = Colors.black,
+    this.width = 2.0,
+  })  : assert(width < length / 2,
+            ' width is request smaller than half of length'),
         super(length: length);
 }

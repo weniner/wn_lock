@@ -9,9 +9,9 @@ class CircleAttr extends Attr {
   double width;
 
   CircleAttr({
-    @required this.radius,
-    this.color,
-    this.width,
+    required this.radius,
+    this.color = Colors.black,
+    this.width = 2.0,
   })  : assert(width < radius, 'width is request smaller than radius'),
         super(length: radius * 2);
 }

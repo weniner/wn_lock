@@ -12,7 +12,7 @@ import 'package:wn_lock/src/wn_lock_paint.dart';
 
 class WNLockWidget extends StatefulWidget {
   /// 移动结束 选取结果返回
-  final ValueChanged<List<int>> onPanEnd;
+  final ValueChanged<List<int>>? onPanEnd;
 
   /// Lock句柄
   final LockController controller;
@@ -25,7 +25,7 @@ class WNLockWidget extends StatefulWidget {
 
   /// 属性
   /// link [CircleAttr]、[SquareAttr]
-  final Attr attr;
+  final Attr? attr;
 
   /// 可触碰点占child比例
   final double touchInChildScale;
@@ -37,16 +37,16 @@ class WNLockWidget extends StatefulWidget {
   final double height;
 
   /// widget padding
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
 
   /// widget margin
-  final EdgeInsets margin;
+  final EdgeInsets? margin;
 
   /// 连接线宽度
-  final double lineWidth;
+  final double? lineWidth;
 
   /// 连接线颜色
-  final Color lineColor;
+  final Color? lineColor;
 
   /// 每个Child平分后占据的空间比例 以row数值作为平分点
   /// 平分空间后所占各空间比例
@@ -54,8 +54,8 @@ class WNLockWidget extends StatefulWidget {
   // final double eachInParentScale;
 
   const WNLockWidget({
-    Key key,
-    @required this.controller,
+    Key? key,
+    required this.controller,
     this.width = 100,
     this.height = 100,
     this.onPanEnd,
@@ -68,12 +68,11 @@ class WNLockWidget extends StatefulWidget {
     this.lineColor,
     this.lineWidth,
     // this.eachInParentScale = 0.5,
-  })  : assert(controller != null, 'LockController can\'t be null'),
-        assert(touchInChildScale > 0 && touchInChildScale <= 1, "touchInWidgetScale only approve (0,1]"),
+  })  : assert(touchInChildScale > 0 && touchInChildScale <= 1,
+            "touchInWidgetScale only approve (0,1]"),
         // assert(eachInParentScale > 0 && eachInParentScale <= 1, "eachInParentScale only approve (0,1]"),
         assert(row > 0 && row <= 9, "row only approve (0,9]"),
         assert(column > 0 && column <= 9, "column only approve (0,9]"),
-        assert(lineWidth > 0 && lineWidth <= 5, 'lineWidth is limit to (0,5] '),
         super(key: key);
 
   @override
@@ -84,7 +83,7 @@ class WNLockWidget extends StatefulWidget {
 
 class _WNLockState extends State<WNLockWidget> {
   /// 手指位置
-  Offset localOffset;
+  Offset? localOffset;
 
   /// 中心点
   List<Offset> _centerPoint = [];
@@ -93,24 +92,24 @@ class _WNLockState extends State<WNLockWidget> {
   bool isEnd = false;
 
   /// 控件宽
-  double _width;
+  late double _width;
 
   /// 控件高
-  double _height;
+  late double _height;
 
-  LockController _lockController;
+  late LockController _lockController;
 
-  int _row;
+  late int _row;
 
-  int _column;
+  late int _column;
 
-  Attr _attr;
+  late Attr _attr;
 
-  double _touchInChildScale;
+  late double _touchInChildScale;
 
-  double _lineWidth;
+  double? _lineWidth;
 
-  Color _lineColor;
+  Color? _lineColor;
 
   @override
   void initState() {
@@ -130,9 +129,7 @@ class _WNLockState extends State<WNLockWidget> {
   @override
   void didUpdateWidget(covariant WNLockWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-
   }
-
 
   void initPoint() {
     if (_centerPoint.length == 0) {
@@ -145,7 +142,8 @@ class _WNLockState extends State<WNLockWidget> {
         for (int i = 0; i < _row; i++) {
           int x = i;
           int y = tempColumn - 1;
-          _centerPoint.add(Offset(halfLength + horizontalSpacing * x, halfLength + verticalSpacing * y));
+          _centerPoint.add(Offset(halfLength + horizontalSpacing * x,
+              halfLength + verticalSpacing * y));
         }
       } while (tempColumn < _column);
     }
@@ -159,20 +157,20 @@ class _WNLockState extends State<WNLockWidget> {
         isEnd = false;
         _lockController.reset();
         localOffset = offset.localPosition;
-        isInCircle(localOffset);
+        isInCircle(localOffset!);
         setState(() {});
       },
       onPanEnd: (offset) {
         isEnd = true;
         if (widget.onPanEnd != null) {
-          widget.onPanEnd(_lockController.value.offsets);
+          widget.onPanEnd!(_lockController.value.offsets);
         }
         setState(() {});
       },
       onPanUpdate: (offset) {
         isEnd = false;
         localOffset = offset.localPosition;
-        isInCircle(localOffset);
+        isInCircle(localOffset!);
         setState(() {});
       },
       child: CustomPaint(
@@ -180,9 +178,9 @@ class _WNLockState extends State<WNLockWidget> {
         painter: WNLockPainter(
           lineColor: _lineColor,
           lineWidth: _lineWidth,
-          choiceResult: _lockController.value.offsets ?? [],
-          centerPoints: _centerPoint ?? [],
-          localOffset: localOffset,
+          choiceResult: _lockController.value.offsets,
+          centerPoints: _centerPoint,
+          localOffset: localOffset!,
           attr: _attr,
           isEnd: isEnd,
         ),
@@ -201,9 +199,11 @@ class _WNLockState extends State<WNLockWidget> {
   void isInCircle(Offset localOffset) {
     final touchDistance = _attr.length / 2 * _touchInChildScale;
     for (Offset offset in _centerPoint) {
-      double radius = sqrt(pow(localOffset.dx - offset.dx, 2) + pow(localOffset.dy - offset.dy, 2));
+      double radius = sqrt(pow(localOffset.dx - offset.dx, 2) +
+          pow(localOffset.dy - offset.dy, 2));
       if (radius < touchDistance) {
-        if (!_lockController.value.offsets.contains(_centerPoint.indexOf(offset))) {
+        if (!_lockController.value.offsets
+            .contains(_centerPoint.indexOf(offset))) {
           _lockController.addOffsets(_centerPoint.indexOf(offset));
         }
       }
